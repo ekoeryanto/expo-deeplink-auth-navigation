@@ -15,10 +15,9 @@ import {
   NavigationAction,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useURL } from 'expo-linking';
+import { useURL, parse as parseURL } from 'expo-linking';
 import * as React from 'react';
 import { ColorSchemeName, InteractionManager } from 'react-native';
-import * as Linking from 'expo-linking';
 
 import { DeepLinkEnum, useDeepLinks } from '../hooks/useDeepLinks';
 import { AuthenticationContext } from '../providers/AuthenticationProvider';
@@ -31,7 +30,7 @@ import { linking, navigationRef } from './linking';
 import { OnboardingStack } from './OnboardingStack';
 
 export const getPathFromURL = (url: string) => {
-  const parsedURL = Linking.parse(url);
+  const parsedURL = parseURL(url);
   if (!parsedURL.path) {
     return '/';
   }
