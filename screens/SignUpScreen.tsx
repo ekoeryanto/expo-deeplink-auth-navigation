@@ -10,7 +10,7 @@ export default function SignUpScreen({
     <View style={styles.container}>
       <Text style={styles.title}>This is Sign Up screen.</Text>
       <TouchableOpacity
-        onPress={() => navigation.replace('Root')}
+        onPress={() => navigation.replace('App')}
         style={styles.link}>
         <Text style={styles.linkText}>Go to home screen!</Text>
       </TouchableOpacity>

@@ -3,6 +3,7 @@ import React, {
   useState,
   FunctionComponent,
   useEffect,
+  useContext,
 } from 'react';
 import { getAuth } from 'firebase/auth';
 
@@ -11,14 +12,12 @@ export interface IAuthenticationContext {
   setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
 
-export const AuthenticationContext = createContext<IAuthenticationContext>({
+export const AuthContext = createContext<IAuthenticationContext>({
   isAuthenticated: false,
   setIsAuthenticated: () => {},
 });
 
-export const AuthenticationProvider: FunctionComponent<unknown> = ({
-  children,
-}) => {
+export const AuthProvider: FunctionComponent<unknown> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
@@ -32,12 +31,22 @@ export const AuthenticationProvider: FunctionComponent<unknown> = ({
   }, []);
 
   return (
-    <AuthenticationContext.Provider
+    <AuthContext.Provider
       value={{
         isAuthenticated,
         setIsAuthenticated,
       }}>
       {children}
-    </AuthenticationContext.Provider>
+    </AuthContext.Provider>
   );
 };
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+
+  return context;
+}

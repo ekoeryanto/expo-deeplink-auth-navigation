@@ -3,7 +3,6 @@ import {
   FirebaseRecaptchaVerifierModal,
 } from 'expo-firebase-recaptcha';
 import { StatusBar } from 'expo-status-bar';
-import { getApp } from 'firebase/app';
 import {
   ApplicationVerifier,
   getAuth,
@@ -11,7 +10,7 @@ import {
   signInAnonymously,
   signInWithCredential,
 } from 'firebase/auth';
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Button,
   Platform,
@@ -19,20 +18,20 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import Constants from 'expo-constants';
 
 import { Text, View } from '../components/Themed';
-import { AuthenticationContext } from '../providers/AuthenticationProvider';
+import { useAuth } from '../providers/Auth';
 import { RootStackScreenProps } from '../types';
 
 export default function SignInScreen({ route }: RootStackScreenProps<any>) {
-  const { isAuthenticated } = useContext(AuthenticationContext);
+  const { isAuthenticated } = useAuth();
   const recaptchaVerifier = useRef(null);
   const [phoneNumber, setPhoneNumber] = useState('+6285161500699');
   const [verificationId, setVerificationId] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
   const [message, showMessage] = useState<any>();
   const attemptInvisibleVerification = true;
-  const firebaseConfig = getApp().options;
   const auth = getAuth();
   const signIn = async () => {
     await signInAnonymously(auth);
@@ -48,7 +47,7 @@ export default function SignInScreen({ route }: RootStackScreenProps<any>) {
         title="Verifikasi"
         cancelLabel="Batal"
         ref={recaptchaVerifier}
-        firebaseConfig={firebaseConfig}
+        firebaseConfig={Constants.manifest?.web?.config?.firebase!}
         attemptInvisibleVerification
       />
       <Text style={{ marginTop: 20 }}>Enter phone number</Text>

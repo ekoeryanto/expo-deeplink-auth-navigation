@@ -12,7 +12,7 @@ import {
   signInAnonymously,
   signInWithCredential,
 } from 'firebase/auth';
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Button,
   Platform,
@@ -22,14 +22,14 @@ import {
 } from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import { AuthenticationContext } from '../providers/AuthenticationProvider';
+import { useAuth } from '../providers/Auth';
 import { RootStackScreenProps } from '../types';
 
 export default function ModalScreen({
   navigation,
   route,
 }: RootStackScreenProps<'Modal'>) {
-  const { isAuthenticated } = useContext(AuthenticationContext);
+  const { isAuthenticated } = useAuth();
   const recaptchaVerifier = useRef(null);
   const [phoneNumber, setPhoneNumber] = useState('+6285161500699');
   const [verificationId, setVerificationId] = useState('');

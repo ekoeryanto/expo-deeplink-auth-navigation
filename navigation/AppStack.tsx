@@ -2,22 +2,40 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import { RootTabParamList, RootTabScreenProps } from '../types';
+import {
+  AppStackParamList,
+  RootTabParamList,
+  RootTabScreenProps,
+} from '../types';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getAuth } from 'firebase/auth';
 import { DeepLinkEnum, useDeepLinks } from '../hooks/useDeepLinks';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ProfileScreen from '../screens/ProfileScreen';
+
+const Stack = createNativeStackNavigator<AppStackParamList>();
+export function AppStack() {
+  useDeepLinks([DeepLinkEnum.NAVIGATION]);
+
+  return (
+    <Stack.Navigator>
+      <Stack.Group screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Tabs" component={RootTabs} />
+      </Stack.Group>
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+    </Stack.Navigator>
+  );
+}
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
-
-export function AppStack({}: RootTabScreenProps<any>) {
-  useDeepLinks([DeepLinkEnum.NAVIGATION]);
+export function RootTabs({}: RootTabScreenProps<any>) {
   const colorScheme = useColorScheme();
 
   return (
@@ -36,7 +54,7 @@ export function AppStack({}: RootTabScreenProps<any>) {
           ),
           headerRight: () => (
             <Pressable
-              onPress={() => push('Modal')}
+              onPress={() => push('Profile')}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>

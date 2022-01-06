@@ -5,34 +5,29 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { DeepLinkProvider } from './providers/DeepLinkProvider';
-import { AuthenticationProvider } from './providers/AuthenticationProvider';
-import { useEffect } from 'react';
-import { openURL, useURL } from 'expo-linking';
-
-// initializeApp(Constants.manifest?.web?.config?.firebase!);
+import { AuthProvider } from './providers/Auth';
+import { Centralize } from './components/Themed';
+import { ActivityIndicator } from 'react-native';
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
 
-  const url = useURL();
-  useEffect(() => {
-    if (url) {
-      openURL(url);
-    }
-  }, [url]);
-
   if (!isLoadingComplete) {
-    return null;
+    return (
+      <Centralize>
+        <ActivityIndicator size="large" color={'red'} />
+      </Centralize>
+    );
   } else {
     return (
       <DeepLinkProvider>
-        <AuthenticationProvider>
+        <AuthProvider>
           <SafeAreaProvider>
             <Navigation colorScheme={colorScheme} />
+            <StatusBar />
           </SafeAreaProvider>
-          <StatusBar />
-        </AuthenticationProvider>
+        </AuthProvider>
       </DeepLinkProvider>
     );
   }

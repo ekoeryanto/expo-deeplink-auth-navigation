@@ -3,6 +3,7 @@
  * https://docs.expo.io/guides/color-schemes/
  */
 
+import { FunctionComponent } from 'react';
 import { Text as DefaultText, View as DefaultView } from 'react-native';
 
 import Colors from '../constants/Colors';
@@ -46,3 +47,10 @@ export function View(props: ViewProps) {
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+
+export const Centralize: FunctionComponent = ({ children }) => (
+  <DefaultView
+    style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    {children}
+  </DefaultView>
+);

@@ -18,12 +18,11 @@ export default function useCachedResources() {
       try {
         SplashScreen.preventAutoHideAsync();
 
-        enableScreens(true);
-
         const app = initializeApp(Constants.manifest?.web?.config?.firebase!);
         const auth = initializeAuth(app, {
           persistence: getReactNativePersistence(AsyncStorage),
         });
+
         auth.useDeviceLanguage();
 
         // Listen to auth ready
@@ -40,6 +39,8 @@ export default function useCachedResources() {
           ...Ionicons.font,
           'space-mono': require('../assets/fonts/SpaceMono-Regular.ttf'),
         });
+
+        enableScreens(true);
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);
